@@ -7,7 +7,7 @@ const https = require("https");
 // ─── Configuration GitHub ─────────────────────────────────────────────────
 const GITHUB_USER   = "AlarmeOrphee5";
 const GITHUB_REPO   = "rpiAcademie";
-const GITHUB_BRANCH = "main";
+const GITHUB_BRANCH = "master";
 const GITHUB_API    = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/modules`;
 const RAW_BASE      = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}/modules`;
 
@@ -138,14 +138,16 @@ app.get("/api/store", async (req, res) => {
 
         // Lister les modules déjà installés localement
         const modulesDir  = path.join(__dirname, "modules");
-        const installes   = fs.readdirSync(modulesDir)
-            .filter(f => f !== "template");
+        const installes = fs.readdirSync(modulesDir)
+        .filter(f => f !== "template" && f[0] !== ".");
 
         // Construire la liste : installé ou non
-        const catalogue = dossiers.map(dossier => ({
-            id:        dossier.name,
-            installe:  installes.includes(dossier.name),
-            githubUrl: dossier.html_url,
+        const catalogue = dossiers
+        .filter(d => d.name !== "template")
+        .map(dossier => ({
+        id: dossier.name,
+        installe: installes.includes(dossier.name),
+        githubUrl: dossier.html_url,
         }));
 
         // Enrichir avec module.json pour les non installés
@@ -203,7 +205,9 @@ app.post("/api/store/install/:id", async (req, res) => {
         for (const fichier of MODULE_FILES) {
             try {
                 const url     = `${RAW_BASE}/${moduleId}/${fichier}`;
-                const contenu = await httpsGet(url);
+               
+               //console.log("Téléchargement :", url);
+               const contenu = await httpsGet(url);
                 fs.writeFileSync(path.join(destDir, fichier), contenu);
             } catch {
                 erreurs.push(fichier); // certains fichiers sont optionnels
@@ -219,6 +223,7 @@ app.post("/api/store/install/:id", async (req, res) => {
 
         // Invalider le cache
         storeCache = null;
+        storeCacheTime = 0;
 
         res.json({
             succes:  true,
@@ -228,5 +233,36 @@ app.post("/api/store/install/:id", async (req, res) => {
 
     } catch (err) {
         res.status(500).json({ erreur: `Erreur installation : ${err.message}` });
+    }
+});
+
+app.post("/api/test/:id", async (req, res) => {
+
+    const id = req.params.id;
+
+    const modulePath = path.join(__dirname, "modules", id, "module.js");
+
+    try {
+
+        const mod = require(modulePath);
+
+        if (typeof mod.test !== "function") {
+            return res.status(400).json({
+                erreur: "Aucune fonction test() dans ce module"
+            });
+        }
+
+        mod.test();
+
+        res.json({
+            succes: true,
+            message: `Test du module ${id} lancé`
+        });
+
+    } catch (err) {
+
+        res.status(500).json({
+            erreur: err.message
+        });
     }
 });

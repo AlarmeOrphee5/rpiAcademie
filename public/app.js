@@ -163,8 +163,6 @@ function renderModule(module) {
         <hr>
 
         <button class="btn-tester" data-id="${escapeHtml(module.id)}">Tester</button>
-            Tester
-        </button>
 
         <div id="output"></div>
 
@@ -184,7 +182,7 @@ function goHome() {
    TEST MODULE
 ========================= */
 
-function testerModule(id) {
+async function testerModule(id) {
 
     const output = document.getElementById("output");
 
@@ -192,8 +190,29 @@ function testerModule(id) {
 
     output.innerHTML = `
         <p>🧪 Test du module : <b>${id}</b></p>
-        <p>Simulation en cours...</p>
+        <p>Envoi au Raspberry Pi...</p>
     `;
+
+    try {
+
+        const res = await fetch(`/api/test/${id}`, {
+            method: "POST"
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.erreur);
+
+        output.innerHTML = `
+            <p>✅ ${data.message}</p>
+        `;
+
+    } catch (err) {
+
+        output.innerHTML = `
+            <p style="color:red">❌ ${err.message}</p>
+        `;
+    }
 }
 
 async function verifierNouveauxModules() {
@@ -212,12 +231,27 @@ async function verifierNouveauxModules() {
 }
 
 function afficherNotifStore(count) {
-    const header = document.querySelector("header");
-    header.innerHTML += `
-        <button class="btn-store" onclick="ouvrirStore()">
-            📦 ${count} module(s) disponible(s)
-        </button>
-    `;
+
+    let btn = document.querySelector(".btn-store");
+
+    if (count === 0) {
+        if (btn) btn.remove();
+        return;
+    }
+
+    if (!btn) {
+
+        const header = document.querySelector("header");
+
+        btn = document.createElement("button");
+
+        btn.className = "btn-store";
+        btn.onclick = ouvrirStore;
+
+        header.appendChild(btn);
+    }
+
+    btn.textContent = `📦 ${count} module(s) disponible(s)`;
 }
 
 async function ouvrirStore() {
@@ -250,23 +284,34 @@ async function ouvrirStore() {
 }
 
 async function installerModule(id) {
+
     const btn = document.querySelector(`[data-id="${id}"].btn-install`);
+
     if (btn) btn.textContent = "⏳ Installation...";
 
     try {
-        const res  = await fetch(`/api/store/install/${id}`, { method: "POST" });
-        const data = await res.json();
 
+        const res = await fetch(`/api/store/install/${id}`, {
+            method: "POST"
+        });
+
+        const data = await res.json();
         if (!res.ok) throw new Error(data.erreur);
 
         if (btn) btn.textContent = "✅ Installé";
-        // Recharger la liste des modules locaux
+
+        // 🔥 IMPORTANT FIX
         const r = await fetch("/api/modules");
         modulesData = await r.json();
+        
+        renderHome(modulesData);
+        await ouvrirStore();
+        await verifierNouveauxModules();
 
     } catch (err) {
+
         if (btn) btn.textContent = "❌ Erreur";
-        alert(`Erreur : ${err.message}`);
+        alert(err.message);
     }
 }
 
@@ -277,11 +322,23 @@ async function installerModule(id) {
 ========================= */
 
 document.addEventListener("click", (e) => {
-    const card = e.target.closest(".card");
-    if (card) openModule(card.dataset.id);
-    const btnTester = e.target.closest(".btn-tester");
-    if (btnTester) testerModule(btnTester.dataset.id);
+
     const btnInstall = e.target.closest(".btn-install");
-    if (btnInstall) installerModule(btnInstall.dataset.id);
+    if (btnInstall) {
+        installerModule(btnInstall.dataset.id);
+        return;
+    }
+
+    const btnTester = e.target.closest(".btn-tester");
+    if (btnTester) {
+        testerModule(btnTester.dataset.id);
+        return;
+    }
+
+    const card = e.target.closest(".card");
+    if (card && card.dataset.id) {
+        openModule(card.dataset.id);
+    }
 });
+
 init();
