@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const rateLimit = require("express-rate-limit");
 const https = require("https");
+const os = require("os");
 
 // ─── Configuration GitHub ─────────────────────────────────────────────────
 const GITHUB_USER   = "AlarmeOrphee5";
@@ -102,7 +103,10 @@ app.get("/api/module/:id", (req, res) => {
    START SERVER
 ========================= */
 app.listen(PORT, () => {
-    console.log(`Serveur démarré : http://localhost:${PORT}`);
+
+    const ip = getLocalIP();
+
+    console.log(`Serveur démarré : http://${ip}:${PORT}`);
 });
 
 /* ── Utilitaire : requête HTTPS → Promise ── */
@@ -266,3 +270,21 @@ app.post("/api/test/:id", async (req, res) => {
         });
     }
 });
+
+function getLocalIP() {
+
+    const interfaces = os.networkInterfaces();
+
+    for (const name of Object.keys(interfaces)) {
+
+        for (const net of interfaces[name]) {
+
+            // IPv4 non interne
+            if (net.family === "IPv4" && !net.internal) {
+                return net.address;
+            }
+        }
+    }
+
+    return "localhost";
+}

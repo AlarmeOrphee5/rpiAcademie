@@ -1,46 +1,28 @@
-// module.js - LED clignotante
+const { Gpio } = require("pigpio");
 
-const Gpio = require("onoff").Gpio;
-
-/* =========================
-   CONFIGURATION
-========================= */
-
-// ⚠️ Change ce GPIO selon ton montage
-const LED_PIN = 17;
-
-// Création de la LED en sortie
-const led = new Gpio(LED_PIN, "out");
-
-/* =========================
-   LOGIQUE MODULE
-========================= */
+const LED = new Gpio(17, { mode: Gpio.OUTPUT });
 
 let interval = null;
+let state = 0;
 
-/**
- * Démarre le clignotement
- * @param {number} speed - vitesse en ms (ex: 500)
- */
+/* =========================
+   START BLINK
+========================= */
 function startBlink(speed = 500) {
 
     if (interval) return;
 
-    let state = 0;
-
     interval = setInterval(() => {
 
-        state = state ^ 1; // toggle 0/1
-        led.writeSync(state);
-
-        console.log(`LED: ${state ? "ON" : "OFF"}`);
+        state = state ^ 1;
+        LED.digitalWrite(state);
 
     }, speed);
 }
 
-/**
- * Stop la LED
- */
+/* =========================
+   STOP BLINK
+========================= */
 function stop() {
 
     if (interval) {
@@ -48,12 +30,13 @@ function stop() {
         interval = null;
     }
 
-    led.writeSync(0);
+    state = 0;
+    LED.digitalWrite(0);
 }
 
-/**
- * Test simple du module
- */
+/* =========================
+   TEST (auto 5s)
+========================= */
 function test() {
 
     console.log("Test LED démarré");
@@ -67,19 +50,20 @@ function test() {
 }
 
 /* =========================
-   CLEAN EXIT (important sur Raspberry Pi)
+   CLEAN EXIT
 ========================= */
-
 process.on("SIGINT", () => {
     stop();
-    led.unexport();
     process.exit();
 });
 
-/* =========================
-   EXPORT (si tu veux l'utiliser ailleurs)
-========================= */
+process.on("exit", () => {
+    stop();
+});
 
+/* =========================
+   EXPORT
+========================= */
 module.exports = {
     startBlink,
     stop,

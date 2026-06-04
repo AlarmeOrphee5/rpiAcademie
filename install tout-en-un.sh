@@ -1,0 +1,73 @@
+#!/bin/bash
+
+echo "===================================="
+echo "  Installation RpiAcademie"
+echo "===================================="
+
+set -e
+
+# -------------------------
+# 1. UPDATE SYSTEM
+# -------------------------
+echo "[1/6] Mise à jour du système..."
+sudo apt update && sudo apt upgrade -y
+
+# -------------------------
+# 2. INSTALL DEPENDANCES SYSTEM
+# -------------------------
+echo "[2/6] Installation dépendances système..."
+
+sudo apt install -y git curl build-essential
+
+# GPIO (pigpio)
+sudo apt install pigpio python3-pigpio
+
+# Démarrage daemon pigpio
+#sudo systemctl enable pigpiod || true
+#sudo systemctl start pigpiod || true
+
+# -------------------------
+# 3. NODEJS (si pas installé)
+# -------------------------
+echo "[3/6] Vérification Node.js..."
+
+if ! command -v node &> /dev/null
+then
+    echo "Node.js non trouvé, installation..."
+
+    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+    sudo apt install -y nodejs
+else
+    echo "Node.js déjà installé"
+fi
+
+# -------------------------
+# 4. CLONE PROJET
+# -------------------------
+echo "[4/6] Téléchargement projet GitHub..."
+
+PROJECT_DIR="$HOME/rpiAcademie"
+
+if [ -d "$PROJECT_DIR" ]; then
+    echo "Projet déjà existant → mise à jour"
+    cd "$PROJECT_DIR"
+    git pull
+else
+    git clone https://github.com/AlarmeOrphee5/rpiAcademie.git "$PROJECT_DIR"
+    cd "$PROJECT_DIR"
+fi
+
+# -------------------------
+# 5. INSTALL NODE MODULES
+# -------------------------
+echo "[5/6] Installation npm..."
+
+npm install
+npm install pigpio
+
+# -------------------------
+# 6. START SERVER
+# -------------------------
+echo "[6/6] Lancement serveur..."
+
+npm start
