@@ -1,0 +1,90 @@
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
+const rateLimit = require("express-rate-limit");
+
+const app = express();
+const PORT = 3000;
+
+/* =========================
+   FRONT STATIC
+========================= */
+const limiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 100,            // 100 requêtes max par minute par IP
+    message: { erreur: "Trop de requêtes, attendez un moment." }
+});
+
+app.use("/api", limiter);
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/modules", express.static(path.join(__dirname, "modules")));
+
+app.use((req, res, next) => {
+    res.setHeader("Content-Security-Policy", 
+        "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net"
+    );
+    next();
+});
+
+/* =========================
+   API : LISTE MODULES
+========================= */
+app.get("/api/modules", (req, res) => {
+
+    const modulesDir = path.join(__dirname, "modules");
+
+    let modules = [];
+
+    const folders = fs.readdirSync(modulesDir);
+
+    folders.forEach(folder => {
+
+        // 👉 IGNORE TEMPLATE
+        if (folder === "template") return;
+
+        const modulePath = path.join(modulesDir, folder);
+        const jsonPath = path.join(modulePath, "module.json");
+
+        if (fs.existsSync(jsonPath)) {
+
+            try {
+                const raw = fs.readFileSync(jsonPath, "utf8");
+                const data = JSON.parse(raw);
+
+                modules.push(data);
+
+            } catch (err) {
+                console.log(`Erreur JSON dans ${folder}`, err.message);
+            }
+        }
+    });
+
+    res.json(modules);
+});
+
+/* =========================
+   API : COURS MD
+========================= */
+
+app.get("/api/module/:id", (req, res) => {
+    try {
+        const moduleId = req.params.id;
+        // Sécurité : empêcher ../../../etc/passwd
+        if (!/^[a-z0-9_-]+$/.test(moduleId)) {
+            return res.status(400).json({ erreur: "ID invalide" });
+        }
+        const modulePath = path.join(__dirname, "modules", moduleId);
+        const json = JSON.parse(fs.readFileSync(path.join(modulePath, "module.json"), "utf8"));
+        const cours = fs.readFileSync(path.join(modulePath, "cours.md"), "utf8");
+        res.json({ ...json, cours });
+    } catch (err) {
+        res.status(404).json({ erreur: `Module introuvable : ${err.message}` });
+    }
+});
+
+/* =========================
+   START SERVER
+========================= */
+app.listen(PORT, () => {
+    console.log(`Serveur démarré : http://localhost:${PORT}`);
+});

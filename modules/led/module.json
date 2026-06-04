@@ -1,0 +1,19 @@
+{
+  "id": "led",
+  "nom": "led",
+  "description": "Description du module led",
+  "image": "image.svg",
+  "difficulte": 1,
+  "categorie": "actionneur",
+  "files": {
+    "cours": "cours.md",
+    "script": "module.js",
+    "schema": "schema.png"
+  },
+  "hardware": {
+    "pins": []
+  },
+  "test": {
+    "type": "simulation"
+  }
+}

@@ -1,0 +1,19 @@
+{
+	"id": "bouton",
+  "nom": "Bouton",
+  "description": "Description du module Bouton",
+  "image": "image.svg",
+  "difficulte": 1,
+  "categorie": "capteur",
+  "files": {
+    "cours": "cours.md",
+    "script": "module.js",
+    "schema": "schema.png"
+  },
+  "hardware": {
+    "pins": []
+  },
+  "test": {
+    "type": "simulation"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "ds18b20",
+  "nom": "DS18B20",
+  "description": "Description du module DS18B20",
+  "image": "image.svg",
+  "difficulte": 1,
+  "categorie": "capteur",
+  "files": {
+    "cours": "cours.md",
+    "script": "module.js",
+    "schema": "schema.png"
+  },
+  "hardware": {
+    "pins": []
+  },
+  "test": {
+    "type": "simulation"
+  }
+}
