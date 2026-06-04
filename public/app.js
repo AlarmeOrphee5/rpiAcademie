@@ -24,6 +24,7 @@ async function init() {
         if (!res.ok) throw new Error(`Erreur serveur : ${res.status}`);
         modulesData = await res.json();
         renderHome(modulesData);
+        verifierNouveauxModules();
     } catch (err) {
         document.getElementById("app").innerHTML = `<p class="erreur">❌ Impossible de charger les modules : ${err.message}</p>`;
     }
@@ -195,6 +196,82 @@ function testerModule(id) {
     `;
 }
 
+async function verifierNouveauxModules() {
+    try {
+        const res = await fetch("/api/store");
+        if (!res.ok) return; // silencieux si pas de réseau
+        const data = await res.json();
+
+        const nouveaux = data.catalogue.filter(m => !m.installe);
+        if (nouveaux.length > 0) {
+            afficherNotifStore(nouveaux.length);
+        }
+    } catch {
+        // Pas de réseau → on ignore silencieusement
+    }
+}
+
+function afficherNotifStore(count) {
+    const header = document.querySelector("header");
+    header.innerHTML += `
+        <button class="btn-store" onclick="ouvrirStore()">
+            📦 ${count} module(s) disponible(s)
+        </button>
+    `;
+}
+
+async function ouvrirStore() {
+    const app = document.getElementById("app");
+    app.innerHTML = `<p>Chargement du catalogue...</p>`;
+
+    try {
+        const res  = await fetch("/api/store");
+        const data = await res.json();
+        const nouveaux = data.catalogue.filter(m => !m.installe);
+
+        app.innerHTML = `
+            <button onclick="goHome()">← Retour</button>
+            <h2>📦 Modules disponibles (${nouveaux.length})</h2>
+            <div class="grid">
+                ${nouveaux.map(m => `
+                    <div class="card">
+                        <h3>${escapeHtml(m.nom || m.id)}</h3>
+                        <p>${escapeHtml(m.description || "")}</p>
+                        <button class="btn-install" data-id="${escapeHtml(m.id)}">
+                            ⬇️ Installer
+                        </button>
+                    </div>
+                `).join("")}
+            </div>
+        `;
+    } catch (err) {
+        app.innerHTML = `<p class="erreur">❌ ${err.message}</p>`;
+    }
+}
+
+async function installerModule(id) {
+    const btn = document.querySelector(`[data-id="${id}"].btn-install`);
+    if (btn) btn.textContent = "⏳ Installation...";
+
+    try {
+        const res  = await fetch(`/api/store/install/${id}`, { method: "POST" });
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.erreur);
+
+        if (btn) btn.textContent = "✅ Installé";
+        // Recharger la liste des modules locaux
+        const r = await fetch("/api/modules");
+        modulesData = await r.json();
+
+    } catch (err) {
+        if (btn) btn.textContent = "❌ Erreur";
+        alert(`Erreur : ${err.message}`);
+    }
+}
+
+
+
 /* =========================
    LANCEMENT APP
 ========================= */
@@ -204,6 +281,7 @@ document.addEventListener("click", (e) => {
     if (card) openModule(card.dataset.id);
     const btnTester = e.target.closest(".btn-tester");
     if (btnTester) testerModule(btnTester.dataset.id);
+    const btnInstall = e.target.closest(".btn-install");
+    if (btnInstall) installerModule(btnInstall.dataset.id);
 });
-
 init();
