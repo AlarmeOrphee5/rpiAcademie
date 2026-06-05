@@ -1,6 +1,7 @@
 const { Gpio } = require("pigpio");
 
 const LED = new Gpio(17, { mode: Gpio.OUTPUT });
+//gpio 17
 
 let interval = null;
 let state = 0;

@@ -1,5 +1,5 @@
 const sensor = require("node-dht-sensor");
-
+//gpio 4
 async function test() {
 
     return new Promise((resolve, reject) => {
