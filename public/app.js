@@ -229,14 +229,6 @@ async function testerModule(id) {
     }
 }
 
-    } catch (err) {
-
-        output.innerHTML = `
-            <p style="color:red">❌ ${err.message}</p>
-        `;
-    }
-}
-
 async function verifierNouveauxModules() {
     try {
         const res = await fetch("/api/store");
