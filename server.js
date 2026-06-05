@@ -242,30 +242,29 @@ app.post("/api/store/install/:id", async (req, res) => {
 
 app.post("/api/test/:id", async (req, res) => {
 
-    const id = req.params.id;
-
-    const modulePath = path.join(__dirname, "modules", id, "module.js");
-
     try {
 
-        const mod = require(modulePath);
+        const modulePath = path.join(
+            __dirname,
+            "modules",
+            req.params.id,
+            "module.js"
+        );
 
-        if (typeof mod.test !== "function") {
-            return res.status(400).json({
-                erreur: "Aucune fonction test() dans ce module"
-            });
-        }
+        delete require.cache[
+            require.resolve(modulePath)
+        ];
 
-        mod.test();
+        const module = require(modulePath);
 
-        res.json({
-            succes: true,
-            message: `Test du module ${id} lancé`
-        });
+        const result = await module.test();
+
+        res.json(result);
 
     } catch (err) {
 
         res.status(500).json({
+            success: false,
             erreur: err.message
         });
     }

@@ -1,0 +1,19 @@
+{
+  "id": "dht22",
+  "nom": "dht22",
+  "description": "Description du module dht22",
+  "image": "image.svg",
+  "difficulte": 1,
+  "categorie": "capteur",
+  "files": {
+    "cours": "cours.md",
+    "script": "module.js",
+    "schema": "schema.png"
+  },
+  "hardware": {
+    "pins": []
+  },
+  "test": {
+    "type": "simulation"
+  }
+}

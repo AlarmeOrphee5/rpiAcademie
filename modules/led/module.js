@@ -37,16 +37,22 @@ function stop() {
 /* =========================
    TEST (auto 5s)
 ========================= */
-function test() {
+async function test() {
 
     console.log("Test LED démarré");
 
-    startBlink(500);
+    startBlink();
 
-    setTimeout(() => {
-        stop();
-        console.log("Test LED terminé");
-    }, 5000);
+    await new Promise(resolve => setTimeout(resolve, 5000));
+
+    stop();
+
+    return {
+        success: true,
+        values: {
+            resultat: "LED clignotée pendant 5 secondes"
+        }
+    };
 }
 
 /* =========================

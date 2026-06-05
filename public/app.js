@@ -189,8 +189,7 @@ async function testerModule(id) {
     if (!output) return;
 
     output.innerHTML = `
-        <p>🧪 Test du module : <b>${id}</b></p>
-        <p>Envoi au Raspberry Pi...</p>
+        <p>🧪 Test en cours...</p>
     `;
 
     try {
@@ -201,11 +200,34 @@ async function testerModule(id) {
 
         const data = await res.json();
 
-        if (!res.ok) throw new Error(data.erreur);
+        if (!res.ok) {
+            throw new Error(data.erreur);
+        }
+
+        let html = "<h3>Résultats</h3>";
+
+        for (const [nom, mesure] of Object.entries(data.values)) {
+
+            html += `
+                <p>
+                <strong>${nom}</strong> :
+                ${mesure.value}
+                ${mesure.unit ?? ""}
+                </p>
+            `;
+        }
+
+        output.innerHTML = html;
+
+    } catch (err) {
 
         output.innerHTML = `
-            <p>✅ ${data.message}</p>
+            <p style="color:red">
+                ❌ ${err.message}
+            </p>
         `;
+    }
+}
 
     } catch (err) {
 
