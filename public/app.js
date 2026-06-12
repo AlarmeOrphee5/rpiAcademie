@@ -329,6 +329,23 @@ async function installerModule(id) {
     }
 }
 
+let interval;
+
+function startTest(id) {
+
+    interval = setInterval(async () => {
+
+        const res = await fetch(`/api/test/${id}`);
+        const data = await res.json();
+
+        afficher(data);
+
+    }, 2000);
+}
+
+function stopTest() {
+    clearInterval(interval);
+}
 
 
 /* =========================
