@@ -126,6 +126,7 @@ async function openModule(id) {
 ========================= */
 
 function renderModule(module) {
+    console.log(module);
 
     const app = document.getElementById("app");
 
@@ -162,23 +163,27 @@ function renderModule(module) {
 
         <hr>
 
-        <button class="btn-tester"
-            data-id="${escapeHtml(module.id)}">
-            🧪 Test unique
-        </button>
+        ${module.test.refresh > 0 ? `
 
-        <button class="btn-start"
-            data-id="${escapeHtml(module.id)}">
-            ▶ Démarrer
-        </button>
+            <button class="btn-start"
+                data-id="${escapeHtml(module.id)}"
+                data-refresh="${module.refresh}">
+                ▶ Démarrer
+            </button>
 
-        <button class="btn-stop">
-            ⏹ Arrêter
-        </button>
+            <button class="btn-stop">
+                ⏹ Arrêter
+            </button>
 
-        <div id="output"></div>
+        ` : `
 
-    `;
+            <button class="btn-tester"
+                data-id="${escapeHtml(module.id)}">
+                🧪 Tester
+            </button>
+
+        `
+    }`;
 }
 
 /* =========================
@@ -256,7 +261,7 @@ function afficherResultat(data) {
     output.innerHTML = html;
 }
 
-function startTest(id) {
+function startTest(id, refresh) {
 
     stopTest();
 
@@ -285,7 +290,7 @@ function startTest(id) {
             `;
         }
 
-    }, 2000);
+    }, refresh); //A changer par un refresh variable
 }
 
 function stopTest() {
@@ -306,7 +311,10 @@ document.addEventListener("click", (e) => {
     
     const btnStart = e.target.closest(".btn-start");
     if (btnStart) {
-        startTest(btnStart.dataset.id);
+        startTest(
+            btnStart.dataset.id,
+            Number(btnStart.dataset.refresh)
+        );
         return;
     }
 

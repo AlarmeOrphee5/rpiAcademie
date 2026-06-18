@@ -155,6 +155,13 @@ app.post("/api/test/:id", async (req, res) => {
             moduleId,
             "module.js"
         );
+        
+        const jsonPath = path.join(
+            __dirname,
+            "modules",
+            moduleId,
+            "module.json"
+        );
 
         if (!fs.existsSync(modulePath)) {
             return res.status(404).json({
@@ -162,6 +169,15 @@ app.post("/api/test/:id", async (req, res) => {
                 erreur: "module.js introuvable"
             });
         }
+        
+        if (!fs.existsSync(jsonPath)) {
+            return res.status(404).json({
+                success: false,
+                erreur: "module.json introuvable"
+            });
+        }
+
+        const moduleConfig = require(jsonPath);
 
         delete require.cache[
             require.resolve(modulePath)
@@ -175,7 +191,7 @@ app.post("/api/test/:id", async (req, res) => {
             );
         }
 
-        const result = await module.test();
+        const result = await module.test(moduleConfig);
 
         res.json(
             result || {
