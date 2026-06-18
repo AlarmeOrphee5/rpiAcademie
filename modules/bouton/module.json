@@ -1,0 +1,20 @@
+{
+  "id": "bouton",
+  "nom": "bouton",
+  "description": "Description du module bouton",
+  "image": "image.svg",
+  "difficulte": 1,
+  "categorie": "actionneur",
+  "files": {
+    "cours": "cours.md",
+    "script": "module.js",
+    "schema": "schema.png"
+  },
+  "hardware": {
+    "pins": []
+  },
+  "test": {
+    "type": "continu",
+    "refresh": 500
+  }
+}

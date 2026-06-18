@@ -250,3 +250,12 @@ app.listen(PORT, () => {
         `Serveur démarré : http://${ip}:${PORT}`
     );
 });
+
+/* =========================
+   STOP SERVER
+========================= */
+
+process.on("SIGINT", () => {
+    console.log("Arrêt du serveur...");
+    process.exit();
+});

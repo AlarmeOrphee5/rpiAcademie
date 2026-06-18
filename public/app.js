@@ -236,30 +236,31 @@ async function testerModule(id) {
 function afficherResultat(data) {
 
     const output = document.getElementById("output");
-    console.log("AFFICHAGE RESULTAT", output, data);
 
-    if (!output) {
-        stopTest(); // 🔥 STOP COMPLET
-        return;
-    }
+    if (!output) return;
 
     let html = "<h3>Résultats</h3>";
 
     if (!data.values) {
-        output.innerHTML = `
-            <p>✅ ${data.message || "Test terminé"}</p>
-        `;
+        output.innerHTML = `<p>OK</p>`;
         return;
     }
 
-    for (const [nom, mesure] of Object.entries(data.values)) {
-        html += `
-            <p>
-                <strong>${nom}</strong> :
-                ${mesure.value}
-                ${mesure.unit ?? ""}
-            </p>
-        `;
+    for (const [nom, valeur] of Object.entries(data.values)) {
+
+        html += `<div><strong>${nom}</strong> : `;
+
+        if (typeof valeur === "object") {
+
+            html += Object.entries(valeur)
+                .map(([k, v]) => `${k}: ${v}`)
+                .join(" | ");
+
+        } else {
+            html += valeur;
+        }
+
+        html += `</div>`;
     }
 
     output.innerHTML = html;
