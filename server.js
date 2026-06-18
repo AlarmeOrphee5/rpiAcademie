@@ -139,7 +139,7 @@ app.get("/api/module/:id", (req, res) => {
 app.post("/api/test/:id", async (req, res) => {
 
     try {
-
+        //console.log("Test demandé :", req.params.id);
         const moduleId = req.params.id;
 
         if (!/^[a-z0-9_-]+$/.test(moduleId)) {
@@ -190,8 +190,12 @@ app.post("/api/test/:id", async (req, res) => {
                 "Fonction test() introuvable"
             );
         }
+        //console.log("Module chargé :", moduleId);
+        //console.log("Lancement du test");
 
         const result = await module.test(moduleConfig);
+        console.log("resultat du test");
+        console.log(result);
 
         res.json(
             result || {

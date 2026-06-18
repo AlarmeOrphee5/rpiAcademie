@@ -1,6 +1,7 @@
 let modulesData = [];
 marked.use({ breaks: true });
 let interval = null;
+let currentModuleId = null;
 
 /* =========================
    UTILITAIRE
@@ -127,8 +128,13 @@ async function openModule(id) {
 
 function renderModule(module) {
     console.log(module);
+    
+    stopTest(); // 🔥 IMPORTANT
 
+    currentModuleId = module.id;
     const app = document.getElementById("app");
+    
+    const refresh = module.test?.refresh || 0;
 
     app.innerHTML = `
 
@@ -163,27 +169,24 @@ function renderModule(module) {
 
         <hr>
 
-        ${module.test.refresh > 0 ? `
+    ${refresh > 0 ? `
+        <button class="btn-start"
+            data-id="${escapeHtml(module.id)}"
+            data-refresh="${refresh}">
+            ▶ Démarrer
+        </button>
 
-            <button class="btn-start"
-                data-id="${escapeHtml(module.id)}"
-                data-refresh="${module.refresh}">
-                ▶ Démarrer
-            </button>
-
-            <button class="btn-stop">
-                ⏹ Arrêter
-            </button>
-
-        ` : `
-
-            <button class="btn-tester"
-                data-id="${escapeHtml(module.id)}">
-                🧪 Tester
-            </button>
-
-        `
-    }`;
+        <button class="btn-stop">
+            ⏹ Arrêter
+        </button>
+    ` : `
+        <button class="btn-tester"
+            data-id="${escapeHtml(module.id)}">
+            🧪 Tester
+        </button>
+    `}
+    <div id="output"></div>
+    `;
 }
 
 /* =========================
@@ -233,6 +236,7 @@ async function testerModule(id) {
 function afficherResultat(data) {
 
     const output = document.getElementById("output");
+    console.log("AFFICHAGE RESULTAT", output, data);
 
     if (!output) {
         stopTest(); // 🔥 STOP COMPLET
@@ -263,39 +267,39 @@ function afficherResultat(data) {
 
 function startTest(id, refresh) {
 
-    stopTest(); // OK
+    refresh = Number(refresh);
+    currentModuleId = id;
+
+    stopTest();
 
     if (!refresh || refresh <= 0) return;
 
     interval = setInterval(async () => {
 
-        const output = document.getElementById("output");
-        if (!output) {
-            stopTest();
-            return;
-        }
-
         try {
+            
+            if (id !== currentModuleId) {
+                stopTest();
+                return;
+            }
+
             const res = await fetch(`/api/test/${id}`, {
                 method: "POST"
             });
 
             const data = await res.json();
 
-            if (!res.ok) throw new Error(data.erreur);
+            const output = document.getElementById("output");
+
+            if (!output) {
+                stopTest();
+                return;
+            }
 
             afficherResultat(data);
 
         } catch (err) {
-
-            stopTest(); // 🔥 important aussi ici
-
-            const output = document.getElementById("output");
-            if (output) {
-                output.innerHTML = `
-                    <p style="color:red">❌ ${err.message}</p>
-                `;
-            }
+            console.error(err);
         }
 
     }, refresh);
@@ -319,10 +323,12 @@ document.addEventListener("click", (e) => {
     
     const btnStart = e.target.closest(".btn-start");
     if (btnStart) {
+        console.log("START DETECTE");
         startTest(
             btnStart.dataset.id,
             Number(btnStart.dataset.refresh)
         );
+
         return;
     }
 
