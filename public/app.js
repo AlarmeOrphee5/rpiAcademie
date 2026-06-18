@@ -234,21 +234,21 @@ function afficherResultat(data) {
 
     const output = document.getElementById("output");
 
-    if (!output) return;
+    if (!output) {
+        stopTest(); // 🔥 STOP COMPLET
+        return;
+    }
 
     let html = "<h3>Résultats</h3>";
 
     if (!data.values) {
-
         output.innerHTML = `
             <p>✅ ${data.message || "Test terminé"}</p>
         `;
-
         return;
     }
 
     for (const [nom, mesure] of Object.entries(data.values)) {
-
         html += `
             <p>
                 <strong>${nom}</strong> :
@@ -263,34 +263,42 @@ function afficherResultat(data) {
 
 function startTest(id, refresh) {
 
-    stopTest();
+    stopTest(); // OK
+
+    if (!refresh || refresh <= 0) return;
 
     interval = setInterval(async () => {
 
-        try {
+        const output = document.getElementById("output");
+        if (!output) {
+            stopTest();
+            return;
+        }
 
+        try {
             const res = await fetch(`/api/test/${id}`, {
                 method: "POST"
             });
 
             const data = await res.json();
 
-            if (!res.ok) {
-                throw new Error(data.erreur);
-            }
+            if (!res.ok) throw new Error(data.erreur);
 
             afficherResultat(data);
 
         } catch (err) {
 
-            document.getElementById("output").innerHTML = `
-                <p style="color:red">
-                    ❌ ${err.message}
-                </p>
-            `;
+            stopTest(); // 🔥 important aussi ici
+
+            const output = document.getElementById("output");
+            if (output) {
+                output.innerHTML = `
+                    <p style="color:red">❌ ${err.message}</p>
+                `;
+            }
         }
 
-    }, refresh); //A changer par un refresh variable
+    }, refresh);
 }
 
 function stopTest() {
