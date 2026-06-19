@@ -1,0 +1,20 @@
+{
+  "id": "hdx-2801",
+  "nom": "hdx-2801",
+  "description": "module capteur d'inclinaison ou de vibration",
+  "image": "image.svg",
+  "difficulte": 3,
+  "categorie": "capteur",
+  "files": {
+    "cours": "cours.md",
+    "script": "module.js",
+    "schema": "schema.png"
+  },
+  "hardware": {
+    "pins": []
+  },
+  "test": {
+    "type": "unique",
+    "refresh": 200
+  }
+}
