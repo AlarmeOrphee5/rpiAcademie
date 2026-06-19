@@ -42,7 +42,8 @@ function renderHome(modules) {
     const grouped = {
         actionneur: [],
         capteur: [],
-        communication: []
+        communication: [],
+        projet: []
     };
 
     modules.forEach(m => {
@@ -58,11 +59,23 @@ function renderHome(modules) {
     });
 
     app.innerHTML = `
+        <div class="welcome-card" data-id="avant-de-commencer">
+
+            <h2>📖 Avant de commencer</h2>
+
+            <p>
+                Découvrez les GPIO, les tensions 3.3V/5V,
+                la breadboard et les bonnes pratiques avant
+                de réaliser vos premiers montages.
+            </p>
+
+        </div>
         <h2>Choisis un module</h2>
 
         ${renderSection("🔴 Actionneurs", grouped.actionneur)}
         ${renderSection("🔵 Capteurs", grouped.capteur)}
         ${renderSection("🟣 Communication", grouped.communication)}
+        ${renderSection("🟣 Projets", grouped.projet)}
     `;
 }
 
@@ -321,6 +334,13 @@ function stopTest() {
 ========================= */
 
 document.addEventListener("click", (e) => {
+    
+    const guide = e.target.closest(".welcome-card");
+
+    if (guide) {
+        openModule("avant-de-commencer");
+        return;
+    }
     
     const btnStart = e.target.closest(".btn-start");
     if (btnStart) {
