@@ -322,10 +322,11 @@ function startTest(id, refresh) {
 function stopTest() {
 
     if (interval) {
-
         clearInterval(interval);
         interval = null;
     }
+
+    document.getElementById("output")?.replaceChildren(); //efface le resultat au clique sur stop
 }
 
 

@@ -1,0 +1,20 @@
+{
+  "id": "74hc595",
+  "nom": "74hc595",
+  "description": "Description courte du module",
+  "image": "image.svg",
+  "difficulte": 1,
+  "categorie": "communication",
+  "files": {
+    "cours": "cours.md",
+    "script": "module.js",
+    "schema": "schema.png"
+  },
+  "hardware": {
+    "pins": []
+  },
+  "test": {
+    "type": "unique",
+    "refresh": 500
+  }
+}
