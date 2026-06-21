@@ -1,0 +1,20 @@
+{
+  "id": "servo-sg90",
+  "nom": "servo-sg90",
+  "description": "servo moteur sg90",
+  "image": "image.svg",
+  "difficulte": 3,
+  "categorie": "actionneur",
+  "files": {
+    "cours": "cours.md",
+    "script": "module.js",
+    "schema": "schema.png"
+  },
+  "hardware": {
+    "pins": []
+  },
+  "test": {
+    "type": "unique",
+    "refresh": 0
+  }
+}
