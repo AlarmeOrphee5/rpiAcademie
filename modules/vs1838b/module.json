@@ -1,0 +1,20 @@
+{
+  "id": "vs1838b",
+  "nom": "Capteur Infrarouge",
+  "description": "Capteur Infrarouge + télécommande",
+  "image": "image.svg",
+  "difficulte": 3,
+  "categorie": "capteur",
+  "files": {
+    "cours": "cours.md",
+    "script": "module.js",
+    "schema": "schema.png"
+  },
+  "hardware": {
+    "pins": []
+  },
+  "test": {
+    "type": "unique",
+    "refresh": 0
+  }
+}

@@ -249,6 +249,7 @@ async function testerModule(id) {
 function afficherResultat(data) {
 
     const output = document.getElementById("output");
+    document.getElementById("output")?.replaceChildren(); //efface le resultat au clique sur stop
 
     if (!output) return;
 
