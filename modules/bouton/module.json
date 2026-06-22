@@ -4,7 +4,7 @@
   "description": "Description du module bouton",
   "image": "image.svg",
   "difficulte": 1,
-  "categorie": "actionneur",
+  "categorie": "capteur",
   "files": {
     "cours": "cours.md",
     "script": "module.js",

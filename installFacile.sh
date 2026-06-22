@@ -68,6 +68,4 @@ npm install pigpio
 # -------------------------
 # 6. START SERVER
 # -------------------------
-echo "[6/6] Lancement serveur..."
-
-npm start
+Pour lancer le serveur : sudo node server.js
