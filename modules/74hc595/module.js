@@ -1,9 +1,9 @@
 const { Gpio } = require("pigpio");
 
 // GPIO (à adapter si besoin)
-const DATA = new Gpio(17, { mode: Gpio.OUTPUT });
-const CLOCK = new Gpio(27, { mode: Gpio.OUTPUT });
-const LATCH = new Gpio(22, { mode: Gpio.OUTPUT });
+let DATA = null;
+let CLOCK = null;
+let LATCH = null;
 
 function pulse(pin) {
     pin.digitalWrite(1);
@@ -31,6 +31,11 @@ function shiftOutByte(value) {
  * Test logique du module
  */
 async function test() {
+    
+    DATA = new Gpio(17, { mode: Gpio.OUTPUT });
+    CLOCK = new Gpio(27, { mode: Gpio.OUTPUT });
+    LATCH = new Gpio(22, { mode: Gpio.OUTPUT });
+
 
     // Séquence pédagogique classique (fiable et standard)
     const sequence = [
@@ -63,4 +68,28 @@ async function test() {
     };
 }
 
-module.exports = { test };
+function stopTest() {
+
+    try {
+
+        if (DATA) {
+            DATA.digitalWrite(0);
+            DATA = null;
+        }
+
+        if (CLOCK) {
+            CLOCK.digitalWrite(0);
+            CLOCK = null;
+        }
+
+        if (LATCH) {
+            LATCH.digitalWrite(0);
+            LATCH = null;
+        }
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+module.exports = { test, stopTest };

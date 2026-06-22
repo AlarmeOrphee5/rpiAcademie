@@ -1,6 +1,6 @@
 const { Gpio } = require("pigpio");
 
-const LED = new Gpio(17, { mode: Gpio.OUTPUT });
+let LED = null;
 //gpio 17
 
 let interval = null;
@@ -39,6 +39,7 @@ function stop() {
    TEST (auto 5s)
 ========================= */
 async function test() {
+    LED = new Gpio(17, { mode: Gpio.OUTPUT });
 
     console.log("Test LED démarré");
 

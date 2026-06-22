@@ -1,8 +1,6 @@
 const { Gpio } = require("pigpio");
 
-const buzzer = new Gpio(18, {
-    mode: Gpio.OUTPUT
-});
+const buzzer = null;
 
 function playTone(frequency, duration) {
 
@@ -27,6 +25,9 @@ function playTone(frequency, duration) {
 async function test() {
 
     console.log("Test buzzer passif");
+    buzzer = new Gpio(18, {
+        mode: Gpio.OUTPUT
+    });
 
     // Do
     await playTone(262, 500);

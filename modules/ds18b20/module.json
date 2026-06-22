@@ -10,11 +10,7 @@
     "script": "module.js",
     "schema": "schema.png"
   },
-  "hardware": {
-    "pins": []
-  },
   "test": {
-    "type": "unique",
     "refresh": 2000
   }
 }

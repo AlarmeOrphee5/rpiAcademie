@@ -4,17 +4,13 @@
   "description": "Capteur Infrarouge + télécommande",
   "image": "image.svg",
   "difficulte": 3,
-  "categorie": "capteur",
+  "categorie": "communication",
   "files": {
     "cours": "cours.md",
     "script": "module.js",
     "schema": "schema.png"
   },
-  "hardware": {
-    "pins": []
-  },
   "test": {
-    "type": "unique",
     "refresh": 0
   }
 }

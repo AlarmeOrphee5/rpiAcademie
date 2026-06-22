@@ -1,8 +1,6 @@
 const { Gpio } = require("pigpio");
 
-const buzzer = new Gpio(18, {
-    mode: Gpio.OUTPUT
-});
+const buzzer = null;
 
 function beep(duration = 500) {
 
@@ -22,6 +20,9 @@ function beep(duration = 500) {
 }
 
 async function test() {
+    buzzer = new Gpio(18, {
+        mode: Gpio.OUTPUT
+    });
 
     for (let i = 0; i < 3; i++) {
 

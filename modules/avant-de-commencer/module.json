@@ -5,15 +5,12 @@
   "image": "image.svg",
   "difficulte": 1,
   "categorie": "guide",
-
   "files": {
     "cours": "cours.md",
     "script": "module.js",
     "schema": "schema.png"
   },
-
   "test": {
-    "type": "unique",
     "refresh": 0
   }
 }

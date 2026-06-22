@@ -1,8 +1,6 @@
 const { Gpio } = require("pigpio");
 
-const servo = new Gpio(18, {
-    mode: Gpio.OUTPUT
-});
+let servo = null;
 
 function setAngle(angle) {
 
@@ -17,6 +15,9 @@ function sleep(ms) {
 }
 
 async function test() {
+    servo = new Gpio(18, {
+        mode: Gpio.OUTPUT
+    });
 
     setAngle(0);
     await sleep(1000);
@@ -31,12 +32,13 @@ async function test() {
     await sleep(1000);
 
     servo.servoWrite(0);
+    
+    servo = null;
 
     return {
         success: true,
         values: {
             servo: {
-                angle: 90,
                 state: "test termine"
             }
         }
