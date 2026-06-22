@@ -3,7 +3,7 @@
   "nom": "74hc595",
   "description": "Description courte du module",
   "image": "image.svg",
-  "difficulte": 1,
+  "difficulte": 4,
   "categorie": "communication",
   "files": {
     "cours": "cours.md",

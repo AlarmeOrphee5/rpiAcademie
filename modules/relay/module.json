@@ -3,7 +3,7 @@
   "nom": "relay",
   "description": "Description courte du module",
   "image": "image.svg",
-  "difficulte": 2,
+  "difficulte": 3,
   "categorie": "actionneur",
   "files": {
     "cours": "cours.md",

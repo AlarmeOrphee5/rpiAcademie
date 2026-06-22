@@ -3,7 +3,7 @@
   "nom": "Capteur Infrarouge",
   "description": "Capteur Infrarouge + télécommande",
   "image": "image.svg",
-  "difficulte": 3,
+  "difficulte": 4,
   "categorie": "communication",
   "files": {
     "cours": "cours.md",

@@ -3,7 +3,7 @@
   "nom": "hdx-2801",
   "description": "module capteur d'inclinaison ou de vibration",
   "image": "image.svg",
-  "difficulte": 3,
+  "difficulte": 2,
   "categorie": "capteur",
   "files": {
     "cours": "cours.md",

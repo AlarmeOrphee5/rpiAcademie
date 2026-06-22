@@ -96,7 +96,11 @@ function renderSection(title, modules) {
 
                 ${modules.map(m => `
 
-                    <div class="card" data-id="${escapeHtml(m.id)}">
+                    <div class="card diff-${m.difficulte || 1}" data-id="${escapeHtml(m.id)}">
+
+                        <div class="difficulty-badge">
+                            ${m.difficulte || 1}
+                        </div>
 
                         <img
                             src="/modules/${escapeHtml(m.id)}/${escapeHtml(m.image)}"
