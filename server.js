@@ -5,7 +5,7 @@ const rateLimit = require("express-rate-limit");
 const os = require("os");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 /* =========================
    FRONT STATIC
@@ -40,49 +40,46 @@ app.use((req, res, next) => {
 
 app.get("/api/modules", (req, res) => {
 
-    const modulesDir = path.join(__dirname, "modules");
+    try {
 
-    const modules = [];
+        const modulesDir = path.join(__dirname, "modules");
+        const modules    = [];
+        const folders    = fs.readdirSync(modulesDir);
 
-    const folders = fs.readdirSync(modulesDir);
+        folders.forEach(folder => {
 
-    folders.forEach(folder => {
+            if (folder === "template") return;
+            if (folder.startsWith(".")) return;
 
-        if (folder === "template") return;
+            const modulePath = path.join(modulesDir, folder);
+            const jsonPath   = path.join(modulePath, "module.json");
 
-        const modulePath = path.join(
-            modulesDir,
-            folder
-        );
+            if (!fs.existsSync(jsonPath)) return;
 
-        const jsonPath = path.join(
-            modulePath,
-            "module.json"
-        );
+            try {
 
-        if (!fs.existsSync(jsonPath)) return;
+                delete require.cache[require.resolve(jsonPath)];
 
-        try {
+                const raw  = fs.readFileSync(jsonPath, "utf8");
+                const data = JSON.parse(raw);
 
-            const raw = fs.readFileSync(
-                jsonPath,
-                "utf8"
-            );
+                modules.push(data);
 
-            const data = JSON.parse(raw);
+            } catch (err) {
+                // Un module cassé ne fait pas planter toute la liste
+                console.warn(`[modules] Erreur dans ${folder} :`, err.message);
+            }
+        });
 
-            modules.push(data);
+        res.json(modules);
 
-        } catch (err) {
+    } catch (err) {
 
-            console.log(
-                `Erreur JSON dans ${folder}`,
-                err.message
-            );
-        }
-    });
-
-    res.json(modules);
+        console.error("[modules] Erreur lecture dossier :", err.message);
+        res.status(500).json({
+            erreur: "Impossible de lire la liste des modules"
+        });
+    }
 });
 
 /* =========================
@@ -177,6 +174,7 @@ app.post("/api/test/:id", async (req, res) => {
             });
         }
 
+        delete require.cache[require.resolve(jsonPath)];
         const moduleConfig = require(jsonPath);
 
         delete require.cache[
@@ -215,6 +213,16 @@ app.post("/api/test/:id", async (req, res) => {
 });
 
 /* =========================
+   VERSIONNING ROUND
+========================= */
+app.get("/api/version", (req, res) => {
+    const packageJson = require("./package.json");
+    res.json({
+        version: packageJson.version
+    });
+});
+
+/* =========================
    OUTILS
 ========================= */
 
@@ -241,6 +249,10 @@ function getLocalIP() {
 /* =========================
    START SERVER
 ========================= */
+app.use((err, req, res, next) => {
+    console.error("Erreur non gérée :", err.message);
+    res.status(500).json({ erreur: "Erreur interne du serveur" });
+});
 
 app.listen(PORT, () => {
 
@@ -255,7 +267,10 @@ app.listen(PORT, () => {
    STOP SERVER
 ========================= */
 
-process.on("SIGINT", () => {
-    console.log("Arrêt du serveur...");
-    process.exit();
-});
+function arretPropre() {
+    console.log("Arrêt propre du serveur...");
+    process.exit(0);
+}
+
+process.on("SIGINT",  arretPropre);
+process.on("SIGTERM", arretPropre);

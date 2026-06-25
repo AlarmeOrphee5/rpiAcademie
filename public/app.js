@@ -26,6 +26,7 @@ async function init() {
         if (!res.ok) throw new Error(`Erreur serveur : ${res.status}`);
         modulesData = await res.json();
         renderHome(modulesData);
+         chargerVersion();
     } catch (err) {
         document.getElementById("app").innerHTML = `<p class="erreur">❌ Impossible de charger les modules : ${err.message}</p>`;
     }
@@ -214,6 +215,26 @@ function goHome() {
 
     stopTest();
     renderHome(modulesData);
+}
+
+/* =========================
+   VERSIONNING
+========================= */
+async function chargerVersion() {
+
+    try {
+
+        const res = await fetch("/api/version");
+        const data = await res.json();
+
+        document.getElementById("versionApp").textContent =
+            `v${data.version}`;
+
+    } catch (err) {
+
+        document.getElementById("versionApp").textContent =
+            "version inconnue";
+    }
 }
 
 /* =========================

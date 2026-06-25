@@ -20,11 +20,11 @@ echo "[2/6] Installation dépendances système..."
 sudo apt install -y git curl build-essential
 
 # GPIO (pigpio)
-sudo apt install pigpio python3-pigpio
+sudo apt install -y pigpio python3-pigpio
 
 # Démarrage daemon pigpio
-#sudo systemctl enable pigpiod || true
-#sudo systemctl start pigpiod || true
+sudo systemctl enable pigpiod || true
+sudo systemctl start pigpiod || true
 
 # -------------------------
 # 3. NODEJS (si pas installé)
@@ -66,6 +66,12 @@ npm install
 npm install pigpio
 
 # -------------------------
-# 6. START SERVER
+# 7. DONE
 # -------------------------
-Pour lancer le serveur : sudo node server.js
+echo ""
+echo "===================================="
+echo "  ✅ Installation terminée !"
+echo "  👉 Interface : http://$(hostname -I | awk '{print $1}'):3000"
+echo "  👉 Logs      : pm2 logs rpiAcademie"
+echo "  👉 Statut    : pm2 status"
+echo "===================================="
