@@ -66,6 +66,37 @@ npm install
 npm install pigpio
 
 # -------------------------
+# 6. INSTALL daemon
+# -------------------------
+echo "[6/6]Installation du service systemd"
+
+cat <<EOF | sudo tee /etc/systemd/system/rpiacademie.service > /dev/null
+[Unit]
+Description=RpiAcademie
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=$(pwd)
+ExecStart=$(which node) server.js
+Restart=on-failure
+User=root
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+
+echo "✅ Service installé."
+
+echo ""
+echo "Commandes disponibles :"
+echo "  sudo systemctl start rpiacademie - Lance le serveur"
+echo "  sudo systemctl stop rpiacademie - arrete le serveur"
+echo "  sudo systemctl restart rpiacademie - relance le serveur"
+echo "  sudo systemctl status rpiacademie - status du serveur"
+# -------------------------
 # 7. DONE
 # -------------------------
 echo ""
