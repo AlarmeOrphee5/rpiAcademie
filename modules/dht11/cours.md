@@ -138,3 +138,15 @@ Pour des mesures plus précises, on utilise souvent le DHT22.
 * Il communique avec le Raspberry Pi grâce à une broche de données.
 * Les résultats sont affichés sous forme de degrés Celsius et de pourcentage.
 * C'est un excellent capteur pour débuter l'électronique et la domotique.
+
+## 🔌 Plan de câblage
+
+```text
+DHT11 / DHT22
+
+3.3V    ───────── VCC
+GPIO17  ───────── DATA
+GND     ───────── GND
+
+3.3V ───[10 kΩ]── DATA
+```

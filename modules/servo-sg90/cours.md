@@ -155,3 +155,13 @@ Forcer le mouvement au-delà de cette plage peut endommager le mécanisme.
 - Il est commandé par un signal PWM.
 - Le Raspberry Pi peut contrôler son angle.
 - Il est très utilisé en robotique et en automatisation.
+
+## 🔌 Plan de câblage
+
+```text
+Servo SG90
+
+5V      ───────── Rouge (VCC)
+GPIO17  ───────── Orange (Signal)
+GND     ───────── Marron (GND)
+```

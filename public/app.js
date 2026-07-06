@@ -174,19 +174,6 @@ function renderModule(module) {
 
         <hr>
 
-        <h3>Schéma</h3>
-
-        <div class="schema">
-
-            <img
-                src="/modules/${escapeHtml(module.id)}/${escapeHtml(module.files.schema)}"
-                alt="Schéma de câblage"
-            >
-
-        </div>
-
-        <hr>
-
     ${refresh > 0 ? `
         <button class="btn-start"
             data-id="${escapeHtml(module.id)}"

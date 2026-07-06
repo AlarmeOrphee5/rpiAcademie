@@ -243,19 +243,20 @@ Ce sont les 8 sorties du registre.
 
 ---
 
-## Câblage recommandé (RpiAcadémie)
+## 🔌 Plan de câblage
 
-| 74HC595 | Raspberry Pi |
-|----------|-------------|
-| DS (14) | GPIO17 |
-| SHCP (11) | GPIO27 |
-| STCP (12) | GPIO22 |
-| OE (13) | GND |
-| MR (10) | 3.3V |
-| VCC (16) | 3.3V |
-| GND (8) | GND |
+```text
+74HC595
 
----
+GPIO17 ───────── DS (Data)
+GPIO27 ───────── SH_CP (Clock)
+GPIO22 ───────── ST_CP (Latch)
+
+3.3V     ───────── VCC
+GND    ───────── GND
+3.3V     ───────── MR
+GND    ───────── OE
+```
 
 ## Fonctionnement simplifié
 

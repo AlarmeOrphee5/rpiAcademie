@@ -1,7 +1,7 @@
 {
   "id": "led",
   "nom": "led",
-  "description": "Description du module led",
+  "description": "emet de la lumière quand un courant le traverse",
   "image": "image.svg",
   "difficulte": 1,
   "categorie": "actionneur",

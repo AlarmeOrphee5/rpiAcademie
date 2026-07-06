@@ -1,7 +1,7 @@
 {
   "id": "relay",
   "nom": "relay",
-  "description": "Description courte du module",
+  "description": "COntrole des appareils fonctionnant avec d'autres voltages",
   "image": "image.svg",
   "difficulte": 3,
   "categorie": "actionneur",

@@ -36,14 +36,17 @@ ou l'inverse selon le câblage utilisé.
 
 ---
 
-## Câblage
+## 🔌 Plan de câblage
 
-### Connexions
+```text
+HDX-2801 (Ball Switch)
 
-| HDX-2801 | Raspberry Pi |
-|-----------|-------------|
-| Broche 1 | GPIO17 |
-| Broche 2 | GND |
+GPIO17  ─────────┐
+                 │
+             [Ball Switch]
+                 │
+GND     ─────────┘
+```
 
 Le capteur n'est pas polarisé. Les deux broches peuvent être inversées.
 

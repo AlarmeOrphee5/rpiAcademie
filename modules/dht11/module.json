@@ -1,7 +1,7 @@
 {
   "id": "dht11",
   "nom": "dht11",
-  "description": "Description du module dht11",
+  "description": "Capteur de température et Humidité faible précision",
   "image": "image.svg",
   "difficulte": 1,
   "categorie": "capteur",

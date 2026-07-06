@@ -8,7 +8,7 @@
  *   DATA → GPIO 17
  */
 
-const IRremote = require("./irremote");
+const IRremote = require("../../assets/irremote");
 
 // Instance unique — le GPIO n'est PAS alloué ici
 const remote = new IRremote(17);

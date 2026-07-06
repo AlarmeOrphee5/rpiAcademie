@@ -34,3 +34,12 @@ Par exemple :
 
 - Simuler l'allumage d'un appareil.
 
+## 🔌 Plan de câblage
+
+```text
+LED
+
+GPIO17 ───[220 Ω]─── (+)
+                     [LED]
+GND     ───────────── (-)
+```

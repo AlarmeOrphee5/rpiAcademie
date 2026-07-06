@@ -1,7 +1,7 @@
 {
   "id": "74hc595",
   "nom": "74hc595",
-  "description": "Description courte du module",
+  "description": "Permet de piloter jusqu’à 8 sorties supplémentaires et indépendantes",
   "image": "image.svg",
   "difficulte": 4,
   "categorie": "communication",

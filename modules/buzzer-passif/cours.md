@@ -9,3 +9,13 @@ La vitesse de ces impulsions est appelée fréquence.
 Plus la fréquence est élevée, plus la note est aiguë.
 
 Grâce à cela, il est possible de jouer des mélodies simples.
+
+## 🔌 Plan de câblage
+
+```text
+Buzzer passif
+
+GPIO17 ───────── SIG
+                 [BUZZER]
+GND     ───────── GND
+```

@@ -1,7 +1,7 @@
 {
   "id": "dht22",
   "nom": "dht22",
-  "description": "Description du module dht22",
+  "description": "Capteur de température et Humidité fiable",
   "image": "image.svg",
   "difficulte": 1,
   "categorie": "capteur",

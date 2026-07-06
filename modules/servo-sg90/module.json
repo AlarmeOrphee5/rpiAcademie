@@ -1,7 +1,7 @@
 {
   "id": "servo-sg90",
   "nom": "servo-sg90",
-  "description": "servo moteur sg90",
+  "description": "servo moteur sg90 angulaire",
   "image": "image.svg",
   "difficulte": 3,
   "categorie": "actionneur",

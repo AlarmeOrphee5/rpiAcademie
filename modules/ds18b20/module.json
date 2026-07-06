@@ -1,7 +1,7 @@
 {
   "id": "ds18b20",
   "nom": "ds18b20",
-  "description": "Description du module ds18b20",
+  "description": "Capteur de température avec un bus 1 wire",
   "image": "image.svg",
   "difficulte": 2,
   "categorie": "capteur",

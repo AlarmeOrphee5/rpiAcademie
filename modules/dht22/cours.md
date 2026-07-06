@@ -147,3 +147,15 @@ Le DHT22 est donc plus adapté lorsque l'on souhaite obtenir des mesures précis
 * Il est souvent utilisé dans les projets nécessitant des mesures fiables.
 
 Le DHT22 est considéré comme l'évolution du DHT11 et constitue un excellent capteur pour les projets de surveillance environnementale.
+
+## 🔌 Plan de câblage
+
+```text
+DHT11 / DHT22
+
+3.3V    ───────── VCC
+GPIO17  ───────── DATA
+GND     ───────── GND
+
+3.3V ───[10 kΩ]── DATA
+```

@@ -58,13 +58,15 @@ Le VS1838B possède 3 broches.
 
 ---
 
-# Câblage sur Raspberry Pi
+## 🔌 Plan de câblage
 
-| VS1838B | Raspberry Pi |
-|---------|---------|
-| VCC | 3.3V |
-| GND | GND |
-| OUT | GPIO17 |
+```text
+VS1838B
+
+3.3V    ───────── VCC
+GPIO17  ───────── OUT
+GND     ───────── GND
+```
 
 ---
 

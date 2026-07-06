@@ -211,3 +211,13 @@ Les relais sont très utilisés en :
 - Contrôle d'équipements électriques.
 
 Ils permettent à un microcontrôleur ou à un Raspberry Pi de commander des équipements beaucoup plus puissants que ce qu'une simple broche GPIO pourrait alimenter.
+
+## 🔌 Plan de câblage
+
+```text
+Relais
+
+5V      ───────── VCC
+GPIO17  ───────── IN
+GND     ───────── GND
+```

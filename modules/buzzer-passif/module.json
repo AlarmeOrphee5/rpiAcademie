@@ -1,7 +1,7 @@
 {
   "id": "buzzer-passif",
   "nom": "buzzer-passif",
-  "description": "Description du module buzzer-passif",
+  "description": "Un buzzer qui émet un bip quand un courant le traverse",
   "image": "image.svg",
   "difficulte": 1,
   "categorie": "actionneur",

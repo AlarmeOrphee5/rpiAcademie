@@ -1,7 +1,7 @@
 {
   "id": "buzzer-actif",
   "nom": "buzzer-actif",
-  "description": "Description du module buzzer-actif",
+  "description": "Buzzer capable de jouer des sons sur 8 bits",
   "image": "image.svg",
   "difficulte": 1,
   "categorie": "actionneur",

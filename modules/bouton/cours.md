@@ -72,3 +72,11 @@ Le Raspberry Pi permet d’activer des résistances internes :
 ✔ évite d’ajouter des résistances physiques  
 ✔ simplifie le montage  
 ✔ réduit les erreurs de câblage 
+
+## Cablage
+
+GPIO17 ───────┐
+              │
+          [Bouton]
+              │
+GND ──────────┘

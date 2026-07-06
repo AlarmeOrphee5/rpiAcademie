@@ -109,3 +109,13 @@ Avant de lancer le test :
 * Le Raspberry Pi peut contrôler un buzzer grâce à ses broches GPIO.
 
 Lorsque le buzzer émet un son, cela signifie que le Raspberry Pi contrôle correctement une sortie GPIO.
+
+## 🔌 Plan de câblage
+
+```text
+Buzzer actif
+
+GPIO17 ───────── SIG (+)
+                 [BUZZER]
+GND     ───────── GND (-)
+```

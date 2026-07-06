@@ -61,6 +61,18 @@ J'ai oublié de fournir la 4.7kΩ la seule différence sera la longueur des cabl
 
 ---
 
+## 🔌 Plan de câblage
+
+```text
+DS18B20
+
+3.3V    ───────── VCC
+GPIO4   ───────── DATA
+GND     ───────── GND
+
+3.3V ───[4.7 kΩ]── DATA
+```
+
 ## Activation du bus 1-Wire
 
 Le Raspberry Pi doit activer le support 1-Wire.
